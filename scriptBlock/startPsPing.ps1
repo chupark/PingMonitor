@@ -10,7 +10,7 @@ param (
 
     [Parameter(Mandatory=$false, ParameterSetName="computer")]
     [Parameter(Mandatory=$false, ParameterSetName="protocol", Position=3)]
-    [ValidateSet('TCP', 'UDP', 'ICMP')]
+    [ValidateSet('TCP', 'ICMP')]
     [String]$protocol = $null,
 
     [Parameter(Mandatory=$true, ParameterSetName="protocol", Position=4)]
@@ -30,9 +30,6 @@ while($true){
         }
         "TCP" {
             $rawResult = psping ($hostIP + ":" + $port) -t -w 0 -i 0 -n 0
-        }
-        "UDP" {
-            $rawResult = psping ($hostIP + ":" + $port) -u -w 0 -i 0 -n 0
         }
         default {
             $rawResult = psping $hostIP -i -w 0 -i 0 -n 0

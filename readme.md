@@ -12,11 +12,13 @@
 
 
 ## 사용 방법
-1. PSTools 설치 후 Path 설정
-2. D:\PowerShell\ 디렉토리를 만든 후 Repository 복사
-3. D:\PowerShell\PingMonitor\static\servers.csv 작성
-4. D:\PowerShell\PingMonitor\static\influx.json 작성
-5. main.ps1 실행
+<ol>
+    <li>PSTools 설치 후 Path 설정</li>
+    <li>D:\PowerShell\ 디렉토리를 만든 후 Repository 복사</li>
+    <li>D:\PowerShell\PingMonitor\static\servers.csv 작성</li>
+    <li>D:\PowerShell\PingMonitor\static\influx.json 작성</li>
+    <li>main.ps1 실행</li>
+</ol>
 
 
 ## 주의사항

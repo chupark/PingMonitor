@@ -21,8 +21,8 @@
 
 ## 주의사항
 1. 서버 사양이 낮으면 과도한 Ping 요청, Insert 요청이 엄청난 부하를 일으킴
-- InfluxDB의 batch 기능을 사용하여 부하를 줄일 수 있음
+ - InfluxDB의 batch 기능을 사용하여 부하를 줄일 수 있음
 2. batch Insert는 시간이 자동으로 기록되지 않음
-- InfluxDB 쿼리를 해보면 batch단위마다 모아둔 데이터 중 1개 row만 Insert가 수행됐음을 확인할 수 있음
-- 이는 DateTime에 Primary Key가 걸리기 때문
-- 수집하는 서버에서 Ping 결과의 시간을 나노초(nano seconds)로 계산하여 batch를 수행해야 함
+ - InfluxDB 쿼리를 해보면 batch단위마다 모아둔 데이터 중 1개 row만 Insert가 수행됐음을 확인할 수 있음
+ - 이는 DateTime에 Primary Key가 걸리기 때문
+ - 수집하는 서버에서 Ping 결과의 시간을 나노초(nano seconds)로 계산하여 batch를 수행해야 함

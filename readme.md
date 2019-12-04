@@ -8,6 +8,15 @@
 3. 한꺼번에 많은 서버를 모니터링해야 하므로 멀티쓰레드 백그라운드 job이 수행됨
 4. 1초마다 Ping을 수행하여 InfluxDB API를 사용하여 데이터 Insert
 5. 서버 부하를 방지하기 위해 InfluxDB 의 batch 기능을 사용함
+6. 데이터 조회는 Grafana 사용
+
+
+## 사용 방법
+1. PSTools 설치 후 Path 설정
+2. D:\PowerShell\ 디렉토리를 만든 후 Repository 복사
+3. D:\PowerShell\PingMonitor\static\servers.csv 작성
+4. D:\PowerShell\PingMonitor\static\influx.json 작성
+5. main.ps1 실행
 
 
 ## 주의사항

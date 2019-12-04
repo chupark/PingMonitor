@@ -7,22 +7,21 @@ param (
 
     [Parameter(Mandatory=$false, ParameterSetName="computer")]
     [Parameter(Mandatory=$false, ParameterSetName="protocol", Position=2)]
-    [ValidateSet('TCP', 'UDP', 'ICMP')]
+    [ValidateSet('TCP', 'ICMP')]
     [String]$protocol = $null,
 
     [Parameter(Mandatory=$true, ParameterSetName="protocol", Position=3)]
     [Parameter(Mandatory=$false, ParameterSetName="computer")]
     [int]$port = $null
 )
-[String]$lineProtocol = $null
-[String]$protocol = $null
-[Array]$batchLineProtocol = $null
+
+$influxConfig = Get-Content -Raw -Path "D:\PowerShell\PingMonitor\static\influx.json" | ConvertFrom-Json
+$influxURI = "http://" + $influxConfig.host + ":" + $influxConfig.port + "/" + "write?db=" + $influxConfig.database
+[int32]$batchSize = $influxConfig.batchSize
 
 while($true){
     $logDate = $null
-    $now = Get-Date
-    $unixEpochStart = New-Object DateTime 1970,1,1,0,0,0,([DateTimeKind]::UTC)
-    $logDate = [int64]((([datetime]$now).AddHours(-9) - $unixEpochStart).TotalMilliseconds*1000000)
+    $logDate = [String]([double](Get-Date -UFormat %s) * 100000) + "0" + "000"
     switch($protocol) {
         "ICMP" { 
             $rawResult = psping $hostIP -i -w 0 -i 0 -n 0
@@ -30,9 +29,6 @@ while($true){
         }
         "TCP" {
             $rawResult = psping ($hostIP + ":" + $port) -t -w 0 -i 0 -n 0
-        }
-        "UDP" {
-            $rawResult = psping ($hostIP + ":" + $port) -u -w 0 -i 0 -n 0
         }
         default {
             $rawResult = psping $hostIP -i -w 0 -i 0 -n 0
@@ -53,8 +49,9 @@ while($true){
     $Matches = $null
     
     $batchLineProtocol += $lineProtocol
-    if($batchLineProtocol.Count -eq 30) {
-        $null = Invoke-WebRequest -Uri "http://localhost:8086/write?db=test" -Body ($batchLineProtocol -join "`n") -Method Post -InformationAction SilentlyContinue
+    Write-Host $batchLineProtocol.Count
+    if($batchLineProtocol.Count -eq $batchSize) {
+        $null = Invoke-WebRequest -Uri $influxURI -Body ($batchLineProtocol -join "`n") -Method Post -InformationAction SilentlyContinue
         $batchLineProtocol = $null
     }
     Start-Sleep -Seconds 1 
